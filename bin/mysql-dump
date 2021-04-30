@@ -1,0 +1,3 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify a CLI command" && exit
+docker-compose exec -T db mysqldump -u root -proot app > "$@";

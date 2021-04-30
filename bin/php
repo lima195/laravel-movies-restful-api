@@ -1,0 +1,3 @@
+#!/bin/bash
+[ -z "$1" ] && echo "Please specify a CLI command (ex. artisan make:test UserTest --unit)" && exit
+docker-compose exec php php "$@"
