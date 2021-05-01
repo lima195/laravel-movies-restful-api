@@ -43,9 +43,9 @@ class BaseRepository implements EloquentRepositoryInterface
 
     /**
      * @param $id
-     * @return Model|null
+     * @return bool|null
      */
-    public function delete($id): ?Model
+    public function delete($id): bool
     {
         return $this->model->destroy($id);
     }
@@ -53,9 +53,9 @@ class BaseRepository implements EloquentRepositoryInterface
     /**
      * @param $id
      * @param array $data
-     * @return Model|null
+     * @return bool|null
      */
-    public function update($id, array $data): ?Model
+    public function update($id, array $data): bool
     {
         return $this->model->find($id)->update($data);
     }

@@ -39,4 +39,8 @@ Route::group([
 ], function ($router) {
     Route::get('/', [MovieController::class, 'list']);
     Route::get('/{id}', [MovieController::class, 'find']);
+    Route::post('/', [MovieController::class, 'create']);
+    Route::put('/{id}', [MovieController::class, 'update']);
+    Route::patch('/{id}', [MovieController::class, 'update']);
+    Route::delete('/{id}', [MovieController::class, 'delete']);
 });
