@@ -37,5 +37,6 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'movie'
 ], function ($router) {
-    Route::get('/show/{id}', [MovieController::class, 'show']);
+    Route::get('/', [MovieController::class, 'list']);
+    Route::get('/{id}', [MovieController::class, 'find']);
 });

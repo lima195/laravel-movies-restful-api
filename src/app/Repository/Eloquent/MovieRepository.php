@@ -5,6 +5,7 @@ namespace App\Repository\Eloquent;
 use App\Models\Movie;
 use App\Repository\MovieRepositoryInterface;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 
 /**
  * Class MovieRepository
@@ -24,10 +25,21 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
     }
 
     /**
+     * @param Request $request
      * @return Collection
      */
-    public function all(): Collection
+    public function all(Request $request): Collection
     {
-        return $this->model->all();
+        $collection = $this->model->where('availability', $this->model::DEFAULT_POSITIVE_AVAILABILITY);
+
+        if ($request->has('title')) {
+            $collection->where('title', 'like', '%' . $request->title . '%');
+        }
+
+        if ($request->has('description')) {
+            $collection->where('description', 'like', '%' . $request->description . '%');
+        }
+
+        return $collection->get();
     }
 }

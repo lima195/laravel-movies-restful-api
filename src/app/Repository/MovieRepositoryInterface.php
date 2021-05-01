@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Model\Movie;
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Collection;
 
 /**
@@ -12,7 +14,8 @@ use Illuminate\Support\Collection;
 interface MovieRepositoryInterface
 {
     /**
+     * @param Request $request
      * @return Collection
      */
-    public function all(): Collection;
+    public function all(Request $request): Collection;
 }

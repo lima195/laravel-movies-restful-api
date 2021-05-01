@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repository\MovieRepositoryInterface;
+use Illuminate\Http\Request;
 
 /**
  * Class MovieController
@@ -26,10 +27,19 @@ class MovieController extends Controller
      * @param $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function find($id): \Illuminate\Http\JsonResponse
     {
         $movie = $this->movieRepository->find($id);
 
-        return response()->json(['movie' => $movie]);
+        return response()->json($movie);
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function list(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $movie = $this->movieRepository->all($request);
+        return response()->json($movie)->withHeaders(['X-Total-Count', 1]);
     }
 }

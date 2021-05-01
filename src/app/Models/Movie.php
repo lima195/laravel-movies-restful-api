@@ -22,4 +22,7 @@ class Movie extends Model
      * @var string
      */
     protected $primaryKey = 'id';
+
+    public const DEFAULT_POSITIVE_AVAILABILITY = true;
+    public const DEFAULT_NEGATIVE_AVAILABILITY = false;
 }
