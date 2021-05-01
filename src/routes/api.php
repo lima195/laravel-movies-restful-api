@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 
 /*
@@ -29,4 +30,12 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
+});
+
+/* Movie Endpoint */
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'movie'
+], function ($router) {
+    Route::get('/show/{id}', [MovieController::class, 'show']);
 });
