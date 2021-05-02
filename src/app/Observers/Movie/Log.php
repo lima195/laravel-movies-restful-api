@@ -18,10 +18,16 @@ trait Log
      */
     protected function logMovie(Movie $movie, string $message, int $error = 0): void
     {
+        $data = [
+            'title' => $movie->title,
+            'rental_price' => $movie->rental_price,
+            'sale_price' => $movie->sale_price,
+        ];
+
         $logData = [
             'user_id' => auth('api')->user()->id,
             'movie_id' => $movie->id,
-            'data' => serialize($movie->toArray()),
+            'data' => serialize($data),
             'message' => $message,
             'error' => $error
         ];

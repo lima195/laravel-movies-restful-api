@@ -50,31 +50,4 @@ class MovieObserver
         $message = "Update movie";
         $this->logMovie($movie, $message);
     }
-
-    /**
-     * @param Movie $movie
-     */
-    public function deleted(Movie $movie): void
-    {
-        $message = "Delete movie";
-        $this->logMovie($movie, $message);
-    }
-
-    /**
-     * @param Movie $movie
-     */
-    public function restored(Movie $movie): void
-    {
-        $message = "Restore movie";
-        $this->logMovie($movie, $message);
-    }
-
-    /**
-     * @param Movie $movie
-     */
-    public function forceDeleted(Movie $movie): void
-    {
-        $message = "Force delete movie";
-        $this->logMovie($movie, $message);
-    }
 }
