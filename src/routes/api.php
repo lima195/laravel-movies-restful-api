@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\LogController;
+use App\Http\Controllers\Api\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,16 +34,22 @@ Route::group([
     Route::get('/user-profile', [AuthController::class, 'userProfile']);
 });
 
-/* Movie Endpoint */
+/* Movie Endpoints */
 Route::group([
     'prefix' => 'movie'
 ], function ($router) {
     Route::get('/', [MovieController::class, 'list']);
     Route::get('/{id}', [MovieController::class, 'find']);
+
+    /* Crud */
     Route::post('/', [MovieController::class, 'create'])->middleware('auth:api');
     Route::put('/{id}', [MovieController::class, 'update'])->middleware('auth:api');
     Route::patch('/{id}', [MovieController::class, 'update'])->middleware('auth:api');
     Route::delete('/{id}', [MovieController::class, 'delete'])->middleware('auth:api');
+
+    /* Like */
+    Route::post('/{id}/like', [LikeController::class, 'like'])->middleware('auth:api');
+    Route::delete('/{id}/like', [LikeController::class, 'dislike'])->middleware('auth:api');
 });
 
 /* Movie Log Endpoint */

@@ -9,6 +9,8 @@ use App\Repository\MovieRepositoryInterface;
 use App\Repository\Eloquent\MovieRepository;
 use App\Repository\MovieLogRepositoryInterface;
 use App\Repository\Eloquent\MovieLogRepository;
+use App\Repository\MovieLikeRepositoryInterface;
+use App\Repository\Eloquent\MovieLikeRepository;
 
 /**
  * Class RepositoryServiceProvider
@@ -26,5 +28,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(EloquentRepositoryInterface::class, BaseRepository::class);
         $this->app->bind(MovieRepositoryInterface::class, MovieRepository::class);
         $this->app->bind(MovieLogRepositoryInterface::class, MovieLogRepository::class);
+        $this->app->bind(MovieLikeRepositoryInterface::class, MovieLikeRepository::class);
     }
 }

@@ -43,4 +43,12 @@ class Movie extends Model
     public const EXTRA_VALIDATION_RULES = [
         'availability' => 'required|numeric|min:0|max:1'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MovieLike::class);
+    }
 }
