@@ -23,6 +23,9 @@ class Movie extends Model
      */
     protected $primaryKey = 'id';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = ['title', 'description', 'stock', 'rental_price', 'sale_price', 'availability'];
 
     public const DEFAULT_POSITIVE_AVAILABILITY = true;

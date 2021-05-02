@@ -2,9 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\MovieController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Api\LogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,13 +35,20 @@ Route::group([
 
 /* Movie Endpoint */
 Route::group([
-    'middleware' => 'api',
     'prefix' => 'movie'
 ], function ($router) {
     Route::get('/', [MovieController::class, 'list']);
     Route::get('/{id}', [MovieController::class, 'find']);
-    Route::post('/', [MovieController::class, 'create']);
-    Route::put('/{id}', [MovieController::class, 'update']);
-    Route::patch('/{id}', [MovieController::class, 'update']);
-    Route::delete('/{id}', [MovieController::class, 'delete']);
+    Route::post('/', [MovieController::class, 'create'])->middleware('auth:api');
+    Route::put('/{id}', [MovieController::class, 'update'])->middleware('auth:api');
+    Route::patch('/{id}', [MovieController::class, 'update'])->middleware('auth:api');
+    Route::delete('/{id}', [MovieController::class, 'delete'])->middleware('auth:api');
+});
+
+/* Movie Log Endpoint */
+Route::group([
+    'prefix' => 'log'
+], function ($router) {
+    Route::get('/movie', [LogController::class, 'list'])->middleware('auth:api');
+    Route::get('/movie/{id}', [LogController::class, 'findByMovie'])->middleware('auth:api');
 });

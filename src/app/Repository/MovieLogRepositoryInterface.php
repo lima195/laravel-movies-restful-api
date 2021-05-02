@@ -7,10 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 /**
- * Interface MovieRepositoryInterface
+ * Interface MovieLogRepositoryInterface
  * @package App\Repository
  */
-interface MovieRepositoryInterface
+interface MovieLogRepositoryInterface
 {
     /**
      * @param Request $request
