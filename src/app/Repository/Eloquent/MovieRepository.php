@@ -31,15 +31,19 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
      */
     public function all(Request $request): Collection
     {
-        $collection = $this->model->where('availability', $this->model::DEFAULT_POSITIVE_AVAILABILITY);
+        $collection = $this->model;
+
+        /* Only if available */
+        $collection = $collection->where('availability', $this->model::DEFAULT_POSITIVE_AVAILABILITY);
+
+        $collection->withCount('likes as popularity');
 
         if ($request->has('title')) {
-            $collection->where('title', 'like', '%' . $request->title . '%');
+            $collection = $collection->where('title', 'like', '%' . $request->title . '%');
         }
 
-        if ($request->has('description')) {
-            $collection->where('description', 'like', '%' . $request->description . '%');
-        }
+        /* Order By Likes and Title */
+        $collection = $collection->orderBy('popularity', 'desc')->orderBy('title', 'asc');
 
         return $collection->get();
     }
