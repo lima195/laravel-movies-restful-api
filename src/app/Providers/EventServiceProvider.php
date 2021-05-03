@@ -8,6 +8,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Models\Movie;
 use App\Observers\MovieObserver;
+use App\Models\MovieActivity;
+use App\Observers\MovieActivityObserver;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -30,5 +32,6 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Movie::observe(MovieObserver::class);
+        MovieActivity::observe(MovieActivityObserver::class);
     }
 }

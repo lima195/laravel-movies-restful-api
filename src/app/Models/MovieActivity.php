@@ -43,6 +43,7 @@ class MovieActivity extends Model
     public const PENALTY_A_DAY = 10;
     PUBLIC CONST UNCONCLUDED = 0;
     PUBLIC CONST CONCLUDED = 1;
+    PUBLIC CONST MIN_DAYS_WITHOUT_PENALTY = 7;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -18,7 +18,7 @@ class MovieObserver
 
     /**
      * MovieObserver constructor.
-     * @param MovieLog $movieLog
+     * @param MovieLogRepositoryInterface $movieLogRepository
      */
     public function __construct(
         MovieLogRepositoryInterface $movieLogRepository
