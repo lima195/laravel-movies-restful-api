@@ -30,6 +30,7 @@ class Movie extends Model
 
     public const DEFAULT_POSITIVE_AVAILABILITY = true;
     public const DEFAULT_NEGATIVE_AVAILABILITY = false;
+    public const MIN_STOCK = 1;
 
     public const VALIDATION_RULES = [
         'title' => 'required|max:255',
@@ -50,5 +51,13 @@ class Movie extends Model
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(MovieLike::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function activities(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(MovieActivity::class);
     }
 }

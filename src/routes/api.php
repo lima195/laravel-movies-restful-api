@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,18 @@ Route::group([
     /* Like */
     Route::post('/{id}/like', [LikeController::class, 'like'])->middleware('auth:api');
     Route::delete('/{id}/like', [LikeController::class, 'dislike'])->middleware('auth:api');
+
+    /* Activity */
+    /* Purchase */
+    Route::post('/{id}/purchase', [ActivityController::class, 'purchase'])->middleware('auth:api');
+    Route::get('/purchase', [ActivityController::class, 'listPurchase'])->middleware('auth:api');
+    Route::get('/purchase/{purchase_id}', [ActivityController::class, 'findPurchase'])->middleware('auth:api');
+
+    /* Rent */
+    Route::post('/{id}/rent', [ActivityController::class, 'rent'])->middleware('auth:api');
+    Route::get('/rent', [ActivityController::class, 'listRent'])->middleware('auth:api');
+    Route::get('/rent/{rent_id}', [ActivityController::class, 'findRent'])->middleware('auth:api');
+    Route::post('/rent/{rent_id}', [ActivityController::class, 'payRent'])->middleware('auth:api');
 });
 
 /* Movie Log Endpoint */

@@ -35,6 +35,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 
         /* Only if available */
         $collection = $collection->where('availability', $this->model::DEFAULT_POSITIVE_AVAILABILITY);
+        $collection = $collection->where('stock', '>', 0);
 
         $collection->withCount('likes as popularity');
 
