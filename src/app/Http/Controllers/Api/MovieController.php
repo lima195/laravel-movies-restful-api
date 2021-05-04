@@ -57,7 +57,19 @@ class MovieController extends Controller
     public function list(Request $request): JsonResponse
     {
         $data = $this->movieRepository->all($request);
-        return response()->json($data)->withHeaders(['X-Total-Count', 1]);
+
+        $pagination = [
+            'page' => $this->movieRepository->page,
+            'per_page' => $this->movieRepository->perPage,
+            'total_this_page' => $data->count(),
+            'total' => $data->total,
+            'total_pages' => ceil($data->total / $this->movieRepository->perPage)
+        ];
+
+        return response()->json(['pagination' => $pagination, 'data' => $data])->withHeaders([
+            'X-Total-Count',
+            $data->total
+        ]);
     }
 
     /**
