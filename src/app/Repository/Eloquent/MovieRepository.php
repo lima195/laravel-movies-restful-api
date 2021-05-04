@@ -13,9 +13,6 @@ use Illuminate\Http\Request;
  */
 class MovieRepository extends BaseRepository implements MovieRepositoryInterface
 {
-    public $page;
-    public $perPage;
-
     /**
      * MovieRepository constructor.
      *
@@ -44,7 +41,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         }
 
         /* Total */
-        $count = $collection->count();
+        $this->logRepository = $collection->count();
 
         /* Pagination */
         $this->perPage = !empty($request->per_page) ? (int)$request->per_page : (int)self::DEFAULT_PER_PAGE;
@@ -60,12 +57,6 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         /* Order By Likes and Title */
         $collection->orderBy('popularity', 'desc')->orderBy('title', 'asc');
 
-        /* Run query */
-        $collection = $collection->get();
-
-        /* Add total to collection */
-        $collection->total = $count;
-
-        return $collection;
+        return $collection->get();
     }
 }

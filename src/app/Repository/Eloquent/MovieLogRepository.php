@@ -30,7 +30,24 @@ class MovieLogRepository extends BaseRepository implements MovieLogRepositoryInt
      */
     public function all(Request $request): Collection
     {
-        $collection = $this->model->where('error', 0)->orderBy('created_at', 'desc');
+        $collection = $this->model->where('error', 0);
+
+        /* Total */
+        $this->total = $collection->count();
+
+        /* Pagination */
+        $this->perPage = !empty($request->per_page) ? (int)$request->per_page : (int)self::DEFAULT_PER_PAGE;
+        $this->perPage = ($this->perPage > self::DEFAULT_MAX_PER_PAGE) ? (int)self::DEFAULT_MAX_PER_PAGE : $this->perPage;
+        if ($this->perPage) {
+            $collection->limit($this->perPage);
+        }
+        $this->page = !empty($request->page) ? (int)$request->page : (int)self::DEFAULT_PAGE;
+        if ($this->page) {
+            $collection->offset(($this->page - 1) * $this->perPage);
+        }
+
+        /* Order by lastest */
+        $collection->orderBy('created_at', 'desc');
 
         return $collection->get();
     }

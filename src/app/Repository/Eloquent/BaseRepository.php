@@ -13,6 +13,21 @@ class BaseRepository implements EloquentRepositoryInterface
     protected const DEFAULT_MAX_PER_PAGE = 25;
 
     /**
+     * @var int
+     */
+    public $page;
+
+    /**
+     * @var int
+     */
+    public $perPage;
+
+    /**
+     * @var int
+     */
+    public $total;
+
+    /**
      * @var Model
      */
     protected $model;
