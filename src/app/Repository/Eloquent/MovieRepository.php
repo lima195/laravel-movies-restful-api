@@ -41,7 +41,7 @@ class MovieRepository extends BaseRepository implements MovieRepositoryInterface
         }
 
         /* Total */
-        $this->logRepository = $collection->count();
+        $this->total = $collection->count();
 
         /* Pagination */
         $this->perPage = !empty($request->per_page) ? (int)$request->per_page : (int)self::DEFAULT_PER_PAGE;

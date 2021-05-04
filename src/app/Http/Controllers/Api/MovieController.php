@@ -62,13 +62,13 @@ class MovieController extends Controller
             'page' => $this->movieRepository->page,
             'per_page' => $this->movieRepository->perPage,
             'total_this_page' => $data->count(),
-            'total' => $data->total,
-            'total_pages' => ceil($data->total / $this->movieRepository->perPage)
+            'total' => $this->movieRepository->total,
+            'total_pages' => ceil($this->movieRepository->total / $this->movieRepository->perPage)
         ];
 
         return response()->json(['pagination' => $pagination, 'data' => $data])->withHeaders([
             'X-Total-Count',
-            $data->total
+            $this->movieRepository->total
         ]);
     }
 
