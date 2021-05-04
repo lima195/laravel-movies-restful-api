@@ -3,6 +3,7 @@
 namespace App\Repository\Eloquent;
 
 use App\Repository\EloquentRepositoryInterface;
+use App\Exceptions\DataNotFoundException;
 use Illuminate\Database\Eloquent\Model;
 
 class BaseRepository implements EloquentRepositoryInterface
@@ -38,7 +39,13 @@ class BaseRepository implements EloquentRepositoryInterface
      */
     public function find($id): ?Model
     {
-        return $this->model->find($id);
+        $data = $this->model->find($id);
+
+        if (!$data) {
+            throw new DataNotFoundException($this->model->getTable());
+        }
+
+        return $data;
     }
 
     /**

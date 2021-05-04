@@ -40,7 +40,7 @@ class ActivityController extends Controller
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws \App\Exceptions\InsufficientMoneyException
+     * @throws \App\Exceptions\MoivieAlreadyPaidException
      * @throws \App\Exceptions\MovieNotAvailableException
      */
     public function purchase(Request $request): JsonResponse

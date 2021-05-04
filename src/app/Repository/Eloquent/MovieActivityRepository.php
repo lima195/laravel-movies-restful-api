@@ -2,7 +2,9 @@
 
 namespace App\Repository\Eloquent;
 
+use App\Exceptions\DataNotFoundException;
 use App\Exceptions\InsufficientMoneyException;
+use App\Exceptions\MovieAlreadyPaidException;
 use App\Exceptions\MovieNotAvailableException;
 use App\Models\MovieActivity;
 use App\Repository\MovieActivityRepositoryInterface;
@@ -46,7 +48,7 @@ class MovieActivityRepository extends BaseRepository implements MovieActivityRep
         $collection = $collection->where('user_id', auth()->user()->id);
         $collection = $collection->where('type', $type);
 
-        if($id) {
+        if ($id) {
             $collection = $collection->where('id', $id);
         }
 
@@ -59,24 +61,24 @@ class MovieActivityRepository extends BaseRepository implements MovieActivityRep
      * @param $movieId
      * @param $credit
      * @return bool
-     * @throws InsufficientMoneyException
+     * @throws MoivieAlreadyPaidException
      * @throws MovieNotAvailableException
      */
     public function purchase($movieId, $credit): bool
     {
         $movie = $this->movieRepository->find($movieId);
 
-        if($movie->stock < $movie::MIN_STOCK || $movie->availability != $movie::DEFAULT_POSITIVE_AVAILABILITY) {
+        if ($movie->stock < $movie::MIN_STOCK || $movie->availability != $movie::DEFAULT_POSITIVE_AVAILABILITY) {
             throw new MovieNotAvailableException();
         }
 
-        if($movie->sale_price > $credit) {
-            throw new InsufficientMoneyException($movie->sale_price);
+        if ($movie->sale_price > $credit) {
+            throw new MoivieAlreadyPaidException($movie->sale_price);
         }
 
         $movieActivity = $this->model;
 
-        \DB::transaction(function() use ($movie, $movieActivity, $credit) {
+        \DB::transaction(function () use ($movie, $movieActivity, $credit) {
             try {
                 $movie->update(['stock' => $movie->stock - 1]);
                 $movieActivity->create([
@@ -106,13 +108,13 @@ class MovieActivityRepository extends BaseRepository implements MovieActivityRep
     {
         $movie = $this->movieRepository->find($movieId);
 
-        if($movie->stock < $movie::MIN_STOCK || $movie->availability != $movie::DEFAULT_POSITIVE_AVAILABILITY) {
+        if ($movie->stock < $movie::MIN_STOCK || $movie->availability != $movie::DEFAULT_POSITIVE_AVAILABILITY) {
             throw new MovieNotAvailableException();
         }
 
         $movieActivity = $this->model;
 
-        \DB::transaction(function() use ($movie, $movieActivity) {
+        \DB::transaction(function () use ($movie, $movieActivity) {
             try {
                 $movie->update(['stock' => $movie->stock - 1]);
                 $movieActivity->create([
@@ -138,20 +140,25 @@ class MovieActivityRepository extends BaseRepository implements MovieActivityRep
      * @param $rentId
      * @param $credit
      * @return bool
-     * @throws InsufficientMoneyException
      */
     public function payRent($movieId, $rentId, $credit): bool
     {
-        $movieActivity = $this->model->find($rentId);
-        $movie = $this->movieRepository->find($movieActivity->movie->id);
-        $penalty = $this->model->getPenalty();
-        $totalToPay = $movie->sale_price + $penalty;
+        $movieActivity = $this->find($rentId);
 
-        if($totalToPay > $credit) {
-            throw new InsufficientMoneyException($totalToPay);
+        if ($movieActivity->concluded == $movieActivity::CONCLUDED) {
+            throw new MovieAlreadyPaidException();
         }
 
-        \DB::transaction(function() use ($movie, $movieActivity, $credit, $penalty) {
+        $movie = $this->movieRepository->find($movieActivity->movie->id);
+
+        $penalty = $movieActivity->getPenalty();
+        $totalToPay = $movie->sale_price + $penalty;
+
+        if ($totalToPay > $credit) {
+            throw new InsufficientMoneyException("$totalToPay|$penalty");
+        }
+
+        \DB::transaction(function () use ($movie, $movieActivity, $credit, $penalty) {
             try {
                 $movie->update(['stock' => $movie->stock + 1]);
                 $movieActivity->update([

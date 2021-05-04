@@ -12,6 +12,7 @@ class InsufficientMoneyException extends Exception
 {
     protected const INSUFFICIENT_MESSAGE = "Insufficient credit. Minimum amount: ";
     protected const YOUR_CREDIT_MESSAGE = "Your credit: ";
+    protected const PENALTY_MESSAGE = "Your penalty: ";
     protected $message;
 
     /**
@@ -29,7 +30,11 @@ class InsufficientMoneyException extends Exception
      */
     protected function buildMessage($credit): void
     {
-        $this->message = __(self::INSUFFICIENT_MESSAGE) . $this->getMessage() . ' ';
-        $this->message.= __(self::YOUR_CREDIT_MESSAGE) . $credit;
+        list($movieValue, $penalty) = explode("|", $this->getMessage());
+        $this->message = __(self::INSUFFICIENT_MESSAGE) . (float)$movieValue . ' ';
+        $this->message .= __(self::YOUR_CREDIT_MESSAGE) . $credit;
+        if ((float)$penalty > 0) {
+            $this->message .= ' ' . __(self::PENALTY_MESSAGE) . (float)$penalty . '.';
+        }
     }
 }

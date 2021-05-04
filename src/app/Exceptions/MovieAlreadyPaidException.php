@@ -5,18 +5,18 @@ namespace App\Exceptions;
 use Exception;
 
 /**
- * Class MovieNotAvailableException
+ * Class MovieAlreadyPaidException
  * @package App\Exceptions
  */
-class MovieNotAvailableException extends Exception
+class MovieAlreadyPaidException extends Exception
 {
-    protected const MESSAGE = "Movie not available.";
+    protected const MESSAGE = "Movie already paid";
 
     /**
      * @return \Illuminate\Http\JsonResponse
      */
     public function render(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['error' => __(self::MESSAGE)], 500);
+        return response()->json(['error' => self::MESSAGE], 500);
     }
 }
